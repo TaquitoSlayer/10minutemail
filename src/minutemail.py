@@ -15,7 +15,10 @@ class Mail(object):
             random_tls_extension_order=True,
 
         )
-        self.session.headers = {
+        # self.session.headers =
+        self.message_count = 0
+        self.messages = []
+        self.mail = self.session.get(NEW_EMAIL, headers={
             'authority': '10minutemail.com',
             'accept': '*/*',
             'accept-language': 'en-CA,en-US;q=0.9,en;q=0.8',
@@ -30,10 +33,7 @@ class Mail(object):
             'sec-fetch-mode': 'cors',
             'sec-fetch-site': 'same-origin',
             'x-requested-with': 'XMLHttpRequest',
-        }
-        self.message_count = 0
-        self.messages = []
-        self.mail = self.session.get(NEW_EMAIL).json()['address']
+        }).json()['address']
 
     def get_mail(self):
         """
@@ -52,7 +52,22 @@ class Mail(object):
         Fetches for new messages which are not present in the instance
         :return: List of messages stored in the instance
         """
-        res = self.session.get(MESSAGE_AFTER + str(self.message_count)).json()
+        res = self.session.get(MESSAGE_AFTER + str(self.message_count), headers={
+            'authority': '10minutemail.com',
+            'accept': '*/*',
+            'accept-language': 'en-CA,en-US;q=0.9,en;q=0.8',
+            'cache-control': 'no-cache',
+            'dnt': '1',
+            'pragma': 'no-cache',
+            'referer': 'https://10minutemail.com/',
+            'sec-ch-ua': '"Not A(Brand";v="99", "Microsoft Edge";v="121", "Chromium";v="121"',
+            'sec-ch-ua-mobile': '?0',
+            'sec-ch-ua-platform': '"macOS"',
+            'sec-fetch-dest': 'empty',
+            'sec-fetch-mode': 'cors',
+            'sec-fetch-site': 'same-origin',
+            'x-requested-with': 'XMLHttpRequest',
+        }).json()
         self.message_count += len(res)
         self.messages += res
         return self.messages
@@ -62,7 +77,22 @@ class Mail(object):
         Check whether there are new messages or not
         :return: bool
         """
-        return self.session.get(MESSAGE_COUNT).json()['messageCount'] != self.message_count
+        return self.session.get(MESSAGE_COUNT, headers={
+            'authority': '10minutemail.com',
+            'accept': '*/*',
+            'accept-language': 'en-CA,en-US;q=0.9,en;q=0.8',
+            'cache-control': 'no-cache',
+            'dnt': '1',
+            'pragma': 'no-cache',
+            'referer': 'https://10minutemail.com/',
+            'sec-ch-ua': '"Not A(Brand";v="99", "Microsoft Edge";v="121", "Chromium";v="121"',
+            'sec-ch-ua-mobile': '?0',
+            'sec-ch-ua-platform': '"macOS"',
+            'sec-fetch-dest': 'empty',
+            'sec-fetch-mode': 'cors',
+            'sec-fetch-site': 'same-origin',
+            'x-requested-with': 'XMLHttpRequest',
+        }).json()['messageCount'] != self.message_count
 
     def __str__(self):
         return self.mail

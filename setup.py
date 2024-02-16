@@ -14,7 +14,7 @@ setup(
     description="Python wrapper for 10minutemail.com",
     long_description=README,
     long_description_content_type="text/markdown",
-    url="https://github.com/SauravKanchan/10minutemail",
+    url="https://github.com/TaquitoSlayer/10minutemail",
     author="Saurav Kanchan",
     author_email="sauravnk30@gmail.com",
     license="MIT",
