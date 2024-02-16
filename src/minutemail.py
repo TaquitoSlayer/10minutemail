@@ -1,6 +1,7 @@
 import requests
 from endpoints import NEW_EMAIL, MESSAGE_AFTER, MESSAGE_COUNT
 from fake_useragent import UserAgent
+import tls_client
 
 
 class Mail(object):
@@ -9,7 +10,11 @@ class Mail(object):
     """
 
     def __init__(self):
-        self.session = requests.session()
+        self.session = tls_client.Session(
+            client_identifier="chrome120",
+            random_tls_extension_order=True,
+
+        )
         self.session.headers = {
             'authority': '10minutemail.com',
             'accept': '*/*',
@@ -24,7 +29,6 @@ class Mail(object):
             'sec-fetch-dest': 'empty',
             'sec-fetch-mode': 'cors',
             'sec-fetch-site': 'same-origin',
-            'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36 Edg/121.0.0.0',
             'x-requested-with': 'XMLHttpRequest',
         }
         self.message_count = 0
